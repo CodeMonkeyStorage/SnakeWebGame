@@ -10,58 +10,6 @@ function runGame() {
         const scale = 15;
         const boardSize = 20;
 
-        function updatePositions() {
-            for(let i = snake.length - 1; i > 0; i--) {
-                snake[i].x = snake[i - 1].x;
-                snake[i].y = snake[i - 1].y;
-            }
-            updateHead();
-        }
-
-        function didCollide() {
-            for(let i = snake.length - 1; i > 0; i--) {
-                if(snake[i].x === snake[0].x && snake[i].y === snake[0].y)
-                    return true;
-            }
-
-            for(let i = 0; i < obstacles.length; i++) {
-                if(obstacles[i].x === snake[0].x && obstacles[i].y === snake[0].y)
-                    return true;
-            }
-            return false;
-        }
-
-        function didGetFood() {
-            if(obstacles[obstacles.length - 1].x === snake[0].x && obstacles[obstacles.length - 1].y === snake[0].y)
-                return true;
-
-            return false;
-        }
-
-        function updateHead() {
-            snake[0].direction === 'right' ? snake[0].x++ : null;
-            snake[0].direction === 'down' ? snake[0].y++ : null;
-            snake[0].direction === 'left' ? snake[0].x-- : null;
-            snake[0].direction === 'up' ? snake[0].y-- : null;
-
-            if(snake[0].x >= boardSize)
-                snake[0].x = 0;
-            else if(snake[0].x < 0)
-                snake[0].x = boardSize;
-            else if(snake[0].y >= boardSize)
-                snake[0].y = 0;
-            else if(snake[0].y < 0)
-                snake[0].y = boardSize;
-        }
-
-        function addBodyPart() {
-            const xDirection = snake[snake.length - 1].x;
-            const yDirection = snake[snake.length - 1].y;
-                
-            updatePositions();
-            snake.push({x: xDirection, y: yDirection});
-        }
-
         class Obstacle {
             constructor() {
                 Obstacle.count === undefined ? Obstacle.count = 0 : Obstacle.count++;
@@ -91,9 +39,57 @@ function runGame() {
             }
         }
 
+        function updatePositions() {
+            for(let i = snake.length - 1; i > 0; i--) {
+                snake[i].x = snake[i - 1].x;
+                snake[i].y = snake[i - 1].y;
+            }
+
+            snake[0].direction === 'right' ? snake[0].x++ : null;
+            snake[0].direction === 'down' ? snake[0].y++ : null;
+            snake[0].direction === 'left' ? snake[0].x-- : null;
+            snake[0].direction === 'up' ? snake[0].y-- : null;
+
+            if(snake[0].x >= boardSize)
+                snake[0].x = 0;
+            else if(snake[0].x < 0)
+                snake[0].x = boardSize;
+            else if(snake[0].y >= boardSize)
+                snake[0].y = 0;
+            else if(snake[0].y < 0)
+                snake[0].y = boardSize;
+        }
+
+        function didCollide() {
+            for(let i = snake.length - 1; i > 0; i--) {
+                if(snake[i].x === snake[0].x && snake[i].y === snake[0].y)
+                    return true;
+            }
+
+            for(let i = 0; i < obstacles.length; i++) {
+                if(obstacles[i].x === snake[0].x && obstacles[i].y === snake[0].y)
+                    return true;
+            }
+            return false;
+        }
+
+        function didGetFood() {
+            if(obstacles[obstacles.length - 1].x === snake[0].x && obstacles[obstacles.length - 1].y === snake[0].y)
+                return true;
+
+            return false;
+        }
+
+        function addBodyPart() {
+            const xDirection = snake[snake.length - 1].x;
+            const yDirection = snake[snake.length - 1].y;
+                
+            updatePositions();
+            snake.push({x: xDirection, y: yDirection});
+        }
+
         function changeDirection(event) {
             event.preventDefault();
-            scrollTo(0, 0);
             if((event.keyCode === 83 || event.keyCode === 40 || event.target.id === 'downButton') && snake[0].direction !== 'up')
                 snake[0].direction = 'down';
             else if((event.keyCode === 68 || event.keyCode === 39 || event.target.id === 'rightButton') && snake[0].direction !== 'left')
