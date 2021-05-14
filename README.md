@@ -7,4 +7,4 @@ A game inspired by the classic game of snake. Use WASD, the arrows keys, or the 
 This application was made with the intention of further understanding vanilla javascript, learning about the html canvas, and to understand basic game logic.
 
 ## Site Link
-https://codemonkeystorage.github.io/SnakeWebGame/
+https://wrStorage.github.io/SnakeWebGame/
